@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": {},
+  "examples": [
+    {
+      "Country": "Germany",
+      "CountryCode": "DE",
+      "Province": "",
+      "City": "",
+      "CityCode": "",
+      "Lat": "51.17",
+      "Lon": "10.45",
+      "Confirmed": 1,
+      "Deaths": 0,
+      "Recovered": 0,
+      "Active": 1,
+      "Date": "2020-01-27T00:00:00Z"
+    }
+  ],
+  "required": [
+    "Country",
+    "CountryCode",
+    "Lat",
+    "Lon",
+    "Confirmed",
+    "Deaths",
+    "Recovered",
+    "Active",
+    "Date"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "Country": {
+      "$id": "#/properties/Country",
+      "type": "string",
+      "title": "The Country schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "Germany"
+      ]
+    },
+    "CountryCode": {
+      "$id": "#/properties/CountryCode",
+      "type": "string",
+      "title": "The CountryCode schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "DE"
+      ]
+    },
+    "Province": {
+      "$id": "#/properties/Province",
+      "type": "string",
+      "title": "The Province schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        ""
+      ]
+    },
+    "City": {
+      "$id": "#/properties/City",
+      "type": "string",
+      "title": "The City schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        ""
+      ]
+    },
+    "CityCode": {
+      "$id": "#/properties/CityCode",
+      "type": "string",
+      "title": "The CityCode schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        ""
+      ]
+    },
+    "Lat": {
+      "$id": "#/properties/Lat",
+      "type": "string",
+      "title": "The Lat schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "51.17"
+      ]
+    },
+    "Lon": {
+      "$id": "#/properties/Lon",
+      "type": "string",
+      "title": "The Lon schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "10.45"
+      ]
+    },
+    "Confirmed": {
+      "$id": "#/properties/Confirmed",
+      "type": "integer",
+      "title": "The Confirmed schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": 0,
+      "examples": [
+        1
+      ]
+    },
+    "Deaths": {
+      "$id": "#/properties/Deaths",
+      "type": "integer",
+      "title": "The Deaths schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": 0,
+      "examples": [
+        0
+      ]
+    },
+    "Recovered": {
+      "$id": "#/properties/Recovered",
+      "type": "integer",
+      "title": "The Recovered schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": 0,
+      "examples": [
+        0
+      ]
+    },
+    "Active": {
+      "$id": "#/properties/Active",
+      "type": "integer",
+      "title": "The Active schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": 0,
+      "examples": [
+        1
+      ]
+    },
+    "Date": {
+      "$id": "#/properties/Date",
+      "type": "string",
+      "title": "The Date schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "2020-01-27T00:00:00Z"
+      ]
+    }
+  }
+}

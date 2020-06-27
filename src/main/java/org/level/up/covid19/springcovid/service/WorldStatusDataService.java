@@ -1,11 +1,11 @@
 package org.level.up.covid19.springcovid.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.level.up.covid19.springcovid.dto.WorldStatus;
+import org.level.up.covid19.springcovid.jpa.WorldStatusEntity;
 
-@Service
-public class WorldStatusDataService {
+public interface WorldStatusDataService {
 
-//    @Autowired
-//    private WorldStatusRepoSpringData worldStatusRepoStringData;
+    void saveWorldStatusSpringData(WorldStatus worldStatus);
+
+    WorldStatusEntity getWorldStatusEntity(Integer worldStatusId);
 }

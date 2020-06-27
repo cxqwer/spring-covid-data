@@ -1,9 +1,6 @@
 package org.level.up.covid19.springcovid.jpa;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +12,7 @@ public class WorldStatusEntity {
     private Integer totalDeaths;
     private Integer newRecovered;
     private Integer totalRecovered;
+    private int id;
 
     @Basic
     @Column(name = "new_confirmed")
@@ -92,5 +90,16 @@ public class WorldStatusEntity {
     @Override
     public int hashCode() {
         return Objects.hash(newConfirmed, totalConfirmed, newDeaths, totalDeaths, newRecovered, totalRecovered);
+    }
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

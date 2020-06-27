@@ -1,7 +1,6 @@
 package org.level.up.covid19.springcovid.service;
 
 import lombok.Data;
-import org.level.up.covid19.springcovid.dto.CountriesStatus;
 import org.level.up.covid19.springcovid.dto.WorldStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;

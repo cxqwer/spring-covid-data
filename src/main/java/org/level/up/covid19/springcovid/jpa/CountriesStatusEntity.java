@@ -17,7 +17,7 @@ public class CountriesStatusEntity {
     private String locationId;
     private CountriesEntity countriesByCountryCode;
 
-    @Basic
+    @Id
     @Column(name = "country")
     public String getCountry() {
         return country;

@@ -1,11 +1,9 @@
 package org.level.up.covid19.springcovid.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
-@AllArgsConstructor
 @ToString
 @Data
 public class WorldStatus {
@@ -27,5 +25,4 @@ public class WorldStatus {
 
     @JsonProperty("TotalRecovered")
     private Integer totalRecovered;
-
 }

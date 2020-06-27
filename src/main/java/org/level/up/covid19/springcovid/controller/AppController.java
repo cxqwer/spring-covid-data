@@ -1,107 +1,107 @@
 package org.level.up.covid19.springcovid.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.networknt.schema.ValidationMessage;
-import com.networknt.schema.ValidationResult;
 import org.level.up.covid19.springcovid.dto.Countries;
 import org.level.up.covid19.springcovid.dto.CountriesStatus;
+import org.level.up.covid19.springcovid.dto.CountryCases;
 import org.level.up.covid19.springcovid.dto.WorldStatus;
+import org.level.up.covid19.springcovid.jpa.CountriesEntity;
+import org.level.up.covid19.springcovid.service.CountriesIntervalData;
 import org.level.up.covid19.springcovid.service.CountryService;
 import org.level.up.covid19.springcovid.service.WorldService;
-import org.level.up.covid19.springcovid.service.jrm.WorldStatusDataServiceImpl;
-import org.level.up.covid19.springcovid.utils.SchemaValidator;
+import org.level.up.covid19.springcovid.service.jrm.CountriesRepoDataImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class AppController {
 
     @Autowired
     private CountryService countryService;
-    @Autowired
-    private SchemaValidator schemaValidator;
-    @Autowired
-    private ObjectMapper objectMapper;
+
     @Autowired
     private WorldService worldService;
-    @Autowired
-    WorldStatusDataServiceImpl worldStatusDataService;
 
     @Autowired
-
+    private CountriesRepoDataImpl countriesRepoSpringData;
 
     /**
-     * Метод возвращает название страны, сокращенное название и  ее код
-     *
-     * @param countyName Название
-     * @return Json если страна есть или пустое тело при отсутствии страны
+     * метод обновляет список стран в БДД
+     * @return
      */
-    @GetMapping("/country")
+    @GetMapping("/countries/update")
     public @ResponseBody
-    Countries getCountry(@RequestBody String countyName) {
-        return countryService.getCountry(countyName);
+    List<Countries> updateCounties() {
+        countriesRepoSpringData.saveCountriesSpringData(countryService.getCountriesList());
+        List<CountriesEntity> countriesEntityList = countriesRepoSpringData.getListCountries();
+        return countryService.countryEntityListToCountryList(countriesEntityList);
     }
 
     /**
-     * Метод возвращает список стран
-     *
+     * метод выводит список стран из БД
      * @return
      */
     @GetMapping("/countries")
     public @ResponseBody
-    List<Countries> getCountryList() {
-        return countryService.getCountriesList();
+    List<Countries> getCounties() {
+        List<CountriesEntity> countriesEntityList = countriesRepoSpringData.getListCountries();
+        return countryService.countryEntityListToCountryList(countriesEntityList);
     }
 
     /**
-     * Метод возвращает все данные по стране
-     *
-     * @param countyName название страны
+     * метод выводит страну из БД
+     * @param countryName
      * @return
      */
-    @GetMapping("/country/status")
+    @GetMapping("/country")
     public @ResponseBody
-    List<CountriesStatus> getCountriesStatusList(@RequestBody String countyName) {
-        return countryService.getCountriesStatusList(countyName);
+    Countries getCountry(@RequestParam("Country") String countryName) {
+        CountriesEntity countriesEntity = countriesRepoSpringData.getCountry(countryName);
+        return countryService.countryEntityToCountry(countriesEntity);
     }
 
     /**
-     * Метод возвращает статистику по миру в указанный период времени
-     *
+     * метод выводит список данных по стране за весь период наблюдений
+     * @param countryName
+     * @return
+     */
+    @GetMapping("/country/countryStatus")
+    public @ResponseBody
+    List<CountriesStatus> getCountriesStatusList(@RequestParam("Country") String countryName) {
+        return countryService.getCountriesStatusList(countryName);
+    }
+
+    /**
+     * метод выводит информацию по миру
      * @param dateFrom
      * @param dateTo
      * @return
      */
     @GetMapping("/world")
     public @ResponseBody
-    List<WorldStatus> getCountriesStatusList(@RequestBody String dateFrom, String dateTo) {
-        for (WorldStatus worldStatus : worldService.getWorldStatusList(dateFrom, dateTo)) {
-            worldStatusDataService.saveWorldStatusSpringData(worldStatus);
-        };
+    List<WorldStatus> getCountriesStatusList(@RequestParam("dateFrom") String dateFrom, @RequestParam("dateTo") String dateTo) {
         return worldService.getWorldStatusList(dateFrom, dateTo);
     }
 
-
-    /*
-    Для примера
+    /**
+     * метод выводит среднее значение новых заболевших страны и общее количество заболевших в период
+     * @param countryName
+     * @param dateFrom
+     * @param dateTo
+     * @return
      */
-    @PostMapping("/add")
+    @GetMapping("/country/liveDate")
     public @ResponseBody
-    String addCountry(@RequestBody String raw) throws JsonProcessingException {
-        ValidationResult validationResult = schemaValidator.validateSchema(raw, "src\\main\\resources\\shema\\Country.json");
-        Set<ValidationMessage> message = validationResult.getValidationMessages();
-        if (!message.isEmpty())
-            return objectMapper.writeValueAsString(message);
-        Countries countries = objectMapper.readValue(raw, Countries.class);
-        return objectMapper.writeValueAsString(countries);
+    CountriesIntervalData getCountriesIntervalData(@RequestParam("Country") String countryName,
+                                                   @RequestParam("dateFrom") String dateFrom,
+                                                   @RequestParam("dateTo") String dateTo) {
+        List<CountryCases> countryServices = countryService.getLiveStatusDate(countryName, dateFrom, dateTo);
+        return new CountriesIntervalData(countryServices);
     }
+
 
 }

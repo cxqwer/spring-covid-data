@@ -10,7 +10,6 @@ public class CountriesEntity {
     private String country;
     private String slug;
     private String iso2;
-    private Collection<CountriesStatusEntity> countriesStatusesByIso2;
 
     @Basic
     @Column(name = "country")
@@ -57,12 +56,4 @@ public class CountriesEntity {
         return Objects.hash(country, slug, iso2);
     }
 
-    @OneToMany(mappedBy = "countriesByCountryCode")
-    public Collection<CountriesStatusEntity> getCountriesStatusesByIso2() {
-        return countriesStatusesByIso2;
-    }
-
-    public void setCountriesStatusesByIso2(Collection<CountriesStatusEntity> countriesStatusesByIso2) {
-        this.countriesStatusesByIso2 = countriesStatusesByIso2;
-    }
 }

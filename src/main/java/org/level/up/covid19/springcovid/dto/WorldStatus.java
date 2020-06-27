@@ -25,4 +25,5 @@ public class WorldStatus {
 
     @JsonProperty("TotalRecovered")
     private Integer totalRecovered;
+
 }

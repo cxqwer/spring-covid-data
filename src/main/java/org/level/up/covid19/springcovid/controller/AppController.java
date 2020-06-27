@@ -9,6 +9,7 @@ import org.level.up.covid19.springcovid.dto.CountriesStatus;
 import org.level.up.covid19.springcovid.dto.WorldStatus;
 import org.level.up.covid19.springcovid.service.CountryService;
 import org.level.up.covid19.springcovid.service.WorldService;
+import org.level.up.covid19.springcovid.service.jrm.WorldStatusDataServiceImpl;
 import org.level.up.covid19.springcovid.utils.SchemaValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,11 @@ public class AppController {
     private ObjectMapper objectMapper;
     @Autowired
     private WorldService worldService;
+    @Autowired
+    WorldStatusDataServiceImpl worldStatusDataService;
+
+    @Autowired
+
 
     /**
      * Метод возвращает название страны, сокращенное название и  ее код
@@ -77,6 +83,9 @@ public class AppController {
     @GetMapping("/world")
     public @ResponseBody
     List<WorldStatus> getCountriesStatusList(@RequestBody String dateFrom, String dateTo) {
+        for (WorldStatus worldStatus : worldService.getWorldStatusList(dateFrom, dateTo)) {
+            worldStatusDataService.saveWorldStatusSpringData(worldStatus);
+        };
         return worldService.getWorldStatusList(dateFrom, dateTo);
     }
 

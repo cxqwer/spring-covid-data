@@ -6,6 +6,8 @@ public interface ClassPath {
     String ALL_STATUS_PATH = "/dayone/country/";
     String TOTAL_PATH = "/total";
     String STATUS_CONFIRMED_PATH = "/status/confirmed";
+    String LIVE_PATH = "/live";
     String WORLD_PATH = "/world";
     String BASE_URL = "https://api.covid19api.com";
+    String RUSSIAN_FEDERATION = "Russian Federation";
 }

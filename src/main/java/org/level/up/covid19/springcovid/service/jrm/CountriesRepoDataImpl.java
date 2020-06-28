@@ -18,6 +18,7 @@ public class CountriesRepoDataImpl implements CountriesRepoData {
     @Autowired
     CountriesRepoMyBatis countriesRepoMyBatis;
 
+    @Override
     public void saveCountriesSpringData(List<Countries> countries) {
         for (Countries country : countries) {
             CountriesEntity countryEntity = new CountriesEntity();
@@ -28,10 +29,12 @@ public class CountriesRepoDataImpl implements CountriesRepoData {
         }
     }
 
+    @Override
     public List<CountriesEntity> getListCountries() {
         return countriesRepoMyBatis.getCountriesMyBatis();
     }
 
+    @Override
     public CountriesEntity getCountry(String countryName) {
         return countriesRepoMyBatis.getCountryMyBatis(countryName);
     }

@@ -2,7 +2,6 @@ package org.level.up.covid19.springcovid.service;
 
 import lombok.Data;
 import lombok.ToString;
-import org.level.up.covid19.springcovid.dto.CountriesStatus;
 import org.level.up.covid19.springcovid.dto.CountryCases;
 
 import java.util.ArrayList;

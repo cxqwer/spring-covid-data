@@ -2,7 +2,7 @@ package org.level.up.covid19.springcovid.service;
 
 import lombok.Data;
 import org.level.up.covid19.springcovid.dto.Countries;
-import org.level.up.covid19.springcovid.dto.CountriesStatus;
+import org.level.up.covid19.springcovid.dto.CountryStatus;
 import org.level.up.covid19.springcovid.dto.CountryCases;
 import org.level.up.covid19.springcovid.jpa.CountriesEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +35,12 @@ public class CountryService {
         return listCountries;
     }
 
-    public List<CountriesStatus> getCountriesStatusList(String countryName) {
+    public List<CountryStatus> getCountriesStatusList(String countryName) {
         HttpEntity httpEntity = new HttpEntity(new HttpHeaders());
-        ResponseEntity<CountriesStatus[]> responseEntity = restTemplate.exchange(BASE_URL + ALL_STATUS_PATH + countryName,
-                HttpMethod.GET, httpEntity, CountriesStatus[].class, 1);
-        List<CountriesStatus> listCountriesStatus = new ArrayList<>(Arrays.asList(responseEntity.getBody()));
-        return listCountriesStatus;
+        ResponseEntity<CountryStatus[]> responseEntity = restTemplate.exchange(BASE_URL + ALL_STATUS_PATH + countryName,
+                HttpMethod.GET, httpEntity, CountryStatus[].class, 1);
+        List<CountryStatus> listCountryStatuses = new ArrayList<>(Arrays.asList(responseEntity.getBody()));
+        return listCountryStatuses;
     }
 
     public List<CountryCases> getLiveStatusDate(String countryName, String dateFrom, String dateTo) {
@@ -49,6 +49,16 @@ public class CountryService {
                 UriComponentsBuilder.fromUriString(BASE_URL + TOTAL_PATH + COUNTRY_PATH + countryName + STATUS_CONFIRMED_PATH)
                         .queryParam("from", dateFrom)
                         .queryParam("to", dateTo);
+        ResponseEntity<CountryCases[]> responseEntity =
+                restTemplate.exchange(urlBuilder.toUriString(), HttpMethod.GET, httpEntity, CountryCases[].class, 1);
+        List<CountryCases> countryCases = new ArrayList<>(Arrays.asList(responseEntity.getBody()));
+        return countryCases;
+    }
+
+    public List<CountryCases> getLiveStatusDate(String countryName) {
+        HttpEntity httpEntity = new HttpEntity(new HttpHeaders());
+        UriComponentsBuilder urlBuilder =
+                UriComponentsBuilder.fromUriString(BASE_URL +  ALL_STATUS_PATH + countryName + STATUS_CONFIRMED_PATH + LIVE_PATH);
         ResponseEntity<CountryCases[]> responseEntity =
                 restTemplate.exchange(urlBuilder.toUriString(), HttpMethod.GET, httpEntity, CountryCases[].class, 1);
         List<CountryCases> countryCases = new ArrayList<>(Arrays.asList(responseEntity.getBody()));

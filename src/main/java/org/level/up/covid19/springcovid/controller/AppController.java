@@ -1,14 +1,16 @@
 package org.level.up.covid19.springcovid.controller;
 
 import org.level.up.covid19.springcovid.dto.Countries;
-import org.level.up.covid19.springcovid.dto.CountriesStatus;
+import org.level.up.covid19.springcovid.dto.CountryStatus;
 import org.level.up.covid19.springcovid.dto.CountryCases;
 import org.level.up.covid19.springcovid.dto.WorldStatus;
 import org.level.up.covid19.springcovid.jpa.CountriesEntity;
+import org.level.up.covid19.springcovid.jpa.CountryLiveEntity;
 import org.level.up.covid19.springcovid.service.CountriesIntervalData;
 import org.level.up.covid19.springcovid.service.CountryService;
 import org.level.up.covid19.springcovid.service.WorldService;
 import org.level.up.covid19.springcovid.service.jrm.CountriesRepoDataImpl;
+import org.level.up.covid19.springcovid.service.jrm.CountryLiveRepoDataImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +30,9 @@ public class AppController {
 
     @Autowired
     private CountriesRepoDataImpl countriesRepoSpringData;
+
+    @Autowired
+    CountryLiveRepoDataImpl countryLiveRepoData;
 
     /**
      * метод обновляет список стран в БДД
@@ -71,7 +76,7 @@ public class AppController {
      */
     @GetMapping("/country/countryStatus")
     public @ResponseBody
-    List<CountriesStatus> getCountriesStatusList(@RequestParam("Country") String countryName) {
+    List<CountryStatus> getCountriesStatusList(@RequestParam("Country") String countryName) {
         return countryService.getCountriesStatusList(countryName);
     }
 
@@ -101,6 +106,30 @@ public class AppController {
                                                    @RequestParam("dateTo") String dateTo) {
         List<CountryCases> countryServices = countryService.getLiveStatusDate(countryName, dateFrom, dateTo);
         return new CountriesIntervalData(countryServices);
+    }
+
+    /**
+     * Метод обновляет данные по стране в таблице
+     * @param countryName
+     * @return сохраненный данные из таблицы
+     */
+    @GetMapping("/countryLive/Update")
+    public @ResponseBody
+    List<CountryLiveEntity> updateCountryLive(@RequestParam("country") String countryName){
+        List<CountryCases> countryCasesList = countryService.getLiveStatusDate(countryName);
+        countryLiveRepoData.saveCountryLiveData(countryCasesList);
+        return countryLiveRepoData.getCountryLiveDataList(countryName);
+    }
+
+    /**
+     * Метод возвращает данные по стране из таблицы
+     * @param countryName
+     * @return
+     */
+    @GetMapping("/countryLive")
+    public @ResponseBody
+    List<CountryLiveEntity> getCountryLive(@RequestParam("country") String countryName){
+        return countryLiveRepoData.getCountryLiveDataList(countryName);
     }
 
 

@@ -6,7 +6,7 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class CountriesStatus {
+public class CountryStatus {
 
     @JsonProperty("Country")
     private String country;
